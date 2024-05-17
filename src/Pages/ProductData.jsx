@@ -21,13 +21,17 @@ function ProductData({ product, onSubmit }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    const formDataToSend = new FormData();
+    for (const key in formData) {
+      formDataToSend.append(key, formData[key]);
+    }
+    onSubmit(formDataToSend);
   };
 
   return (
     <div>
       <h2 className='p-2 justify-center items-center flex'>Edit Product</h2>
-      <form className='text-black flex flex-col w-[300px] justify-start' onSubmit={handleSubmit}>
+      <form className='text-black flex flex-col w-[300px] justify-start' onSubmit={handleSubmit} encType="multipart/form-data">
         <div className='p-3'>
           <label htmlFor="name">Name:</label>
           <input
@@ -57,7 +61,7 @@ function ProductData({ product, onSubmit }) {
             type="number"
             className='bg-white p-1'
             id="price"
-            name="price"
+            name="price_per_unit"
             value={formData.price_per_unit}
             onChange={handleChange}
           />
