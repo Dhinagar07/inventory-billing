@@ -1,0 +1,62 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #d3e7bf;
+    background-image: url("./media/bgi.jpg");
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .login-container {
+    background-color: rgba(255, 255, 255, 0.9); /* Adjust the alpha value as needed */
+    box-shadow: 0px 0px 10px rgba(233, 229, 229, 0.923);
+    border-radius: 5px;
+    padding: 20px;
+    width: 300px;
+    max-height: 80vh; /* Set a maximum height to make the container smaller */
+    text-align: center;
+    overflow-y: auto; /* Add scrollbars if content exceeds the height */
+  }
+  
+  .login-container h2 {
+    margin-bottom: 20px;
+    color: #fafafa;
+  }
+  
+  .login-container input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+  }
+  
+  .login-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  .login-container button:hover {
+    background-color: #0056b3;
+  }
+  
+  .forgot-password {
+    margin-top: 10px;
+    color: #007bff;
+    cursor: pointer;
+  }
+  
+  .forgot-password:hover {
+    text-decoration: underline;
+  }
+  
