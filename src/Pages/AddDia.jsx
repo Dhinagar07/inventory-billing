@@ -15,8 +15,6 @@ function AddDia({ onSubmit }) {
     const { name, value, files } = e.target;
     if (name === 'image') {
       setFormData({ ...formData, image: files[0] });
-    } else if (name === 'stock_quantity') {
-      setFormData({ ...formData, stock_quantity: value });
     } else {
       setFormData({ ...formData, [name]: value });
     }

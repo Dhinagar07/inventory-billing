@@ -29,8 +29,10 @@ function ProductWork() {
       }
     };
 
-    fetchProducts();
-  }, []);
+    if (!showAddProductForm || deletingProductId === null || editingProductId === null) {
+      fetchProducts();
+    }
+  }, [showAddProductForm, deletingProductId, editingProductId ]);
 
   /*useEffect(() => {
     // Filter products based on search query
@@ -47,22 +49,13 @@ function ProductWork() {
   }, [searchQuery, products]);*/
 
   const handleEdit = (productId) => {
+    console.log(productId);
     setEditingProductId(productId);
   };
 
   const handleEditSubmit = async (editedProductData) => {
     try {
-    
-      const updatedProducts = products.map(product => {
-        if (product.id === editingProductId) {
-          return { ...product, ...editedProductData };
-        }
-        return product;
-      });
-
-      setProducts(updatedProducts);
-
-      
+                
       await updateProductInBackend(editingProductId, editedProductData);
       
       setEditingProductId(null); 
@@ -73,18 +66,9 @@ function ProductWork() {
 
   const updateProductInBackend = async (productId, updatedData) => {
     try {
-      const response = await fetch(`http://your-backend-url/products/${productId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedData),
-      });
+      console.log(updatedData);
+      const response = await axios.put(`http://localhost:3001/product/${productId}`,updatedData);
       
-      if (!response.ok) {
-        throw new Error('Failed to update product in backend');
-      }
-
       console.log('Product updated successfully in the backend');
     } catch (error) {
       console.error('Error updating product in the backend:', error);
@@ -97,8 +81,8 @@ function ProductWork() {
 
   const handleDeleteConfirm = async () => {
     try {
-    
-      const updatedProducts = products.filter(product => product.id !== deletingProductId);
+      
+      const updatedProducts = products.filter(product => product.product_id !== deletingProductId);
       setProducts(updatedProducts);
 
       
@@ -112,15 +96,8 @@ function ProductWork() {
 
   const deleteProductFromBackend = async (productId) => {
     try {
-      const response = await fetch(`http://your-backend-url/products/${productId}`, {
-        method: 'DELETE',
-      });
+      await axios.delete(`http://localhost:3001/product/${productId}`);
       
-      if (!response.ok) {
-        throw new Error('Failed to delete product from backend');
-      }
-
-      console.log('Product deleted successfully from the backend');
     } catch (error) {
       console.error('Error deleting product from the backend:', error);
     }
@@ -134,44 +111,12 @@ function ProductWork() {
     setShowAddProductForm(true);
   };
 
-  const handleSubmitAddProduct = async (newProductData) => {
-    try {
-      
-      const newProduct = {
-        id: products.length + 1, 
-        ...newProductData,
-      };
-      const updatedProducts = [...products, newProduct];
-      setProducts(updatedProducts);
-
-      // Add the new product to the backend
-      await addProductToBackend(newProductData);
-      
-      setShowAddProductForm(false); 
-    } catch (error) {
-      console.error('Error adding product:', error);
-    }
+  const handleSubmitAddProduct = async () => {
+          setShowAddProductForm(false);
+    
   };
 
-  const addProductToBackend = async (productData) => {
-    try {
-      const response = await fetch(`http://your-backend-url/products`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(productData),
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to add product to backend');
-      }
-
-      console.log('Product added successfully to the backend');
-    } catch (error) {
-      console.error('Error adding product to the backend:', error);
-    }
-  };
+  
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
@@ -259,13 +204,13 @@ function ProductWork() {
                 <td className="border px-4 py-2">
                   <button
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-                    onClick={() => handleEdit(product.id)}
+                    onClick={() => handleEdit(product.product_id)}
                   >
                     Edit
                   </button>
                   <button
                     className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                    onClick={() => handleDelete(product.id)}
+                    onClick={() => handleDelete(product.product_id)}
                   >
                     Delete
                   </button>
@@ -282,19 +227,10 @@ function ProductWork() {
           </div>
         </div>
       )}
-      {editingProductId && (
-        <div className="fixed inset-0 bg-gray-700 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-8 rounded shadow">
-            <ProductData
-              product={products.find(product => product.id === editingProductId)}
-              onSubmit={handleEditSubmit}
-            />
-          </div>
-        </div>
-      )}
+      
       {deletingProductId && (
         <DeleteDia
-          productName={products.find(product => product.id === deletingProductId)?.name}
+          productName={products.find(product => product.product_id === deletingProductId)?.name}
           onCancel={handleDeleteCancel}
           onConfirm={handleDeleteConfirm}
         />
@@ -317,7 +253,7 @@ function ProductWork() {
   <div className="fixed inset-0 bg-gray-700 bg-opacity-50 flex justify-center items-center">
     <div className="bg-white p-8 rounded shadow">
       <ProductData
-        product={products.find(product => product.id === editingProductId)}
+        product={products.find(product => product.product_id === editingProductId)}
         onSubmit={handleEditSubmit}
       />
     </div>
