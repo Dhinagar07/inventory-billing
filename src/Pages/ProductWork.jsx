@@ -3,6 +3,10 @@ import axios from 'axios';
 import ProductData from './ProductData';
 import DeleteDia from './DeleteDia';
 import AddDia from './AddDia';
+import AdminNavbar from '../Components/adminNavbar';
+import { PencilIcon, TrashIcon, PlusCircleIcon } from '@heroicons/react/24/solid';
+import AdminCard from '../Components/AdminCard';
+
 
 function ProductWork() {
   const [products, setProducts] = useState([]);
@@ -13,6 +17,7 @@ function ProductWork() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [hoveredProductId, setHoveredProductId] = useState(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -21,7 +26,6 @@ function ProductWork() {
         const flattenedProducts = response.data.flat();
         setProducts(flattenedProducts);
         setFilteredProducts(flattenedProducts);
-        console.log(response.data);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -34,7 +38,7 @@ function ProductWork() {
 
   useEffect(() => {
     // Filter products based on search query
-    const filtered = products.filter(product => product &&
+    const filtered = products.filter(product =>
       product.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setFilteredProducts(filtered);
@@ -47,7 +51,6 @@ function ProductWork() {
   }, [searchQuery, products]);
 
   const handleEdit = (productId) => {
-    console.log(productId);
     setEditingProductId(productId);
   };
 
@@ -62,8 +65,7 @@ function ProductWork() {
 
   const updateProductInBackend = async (productId, updatedData) => {
     try {
-      console.log(updatedData);
-      const response = await axios.put(`http://localhost:3001/product/${productId}`, updatedData);
+      await axios.put(`http://localhost:3001/product/${productId}`, updatedData);
       console.log('Product updated successfully in the backend');
     } catch (error) {
       console.error('Error updating product in the backend:', error);
@@ -122,38 +124,27 @@ function ProductWork() {
     setIsSearchFocused(false);
   };
 
+  const handleRowHover = (productId) => {
+    setHoveredProductId(productId);
+  };
+
   return (
-    <div className="bg-white text-black h-screen w-screen flex p-5">
-      <div className="container py-2">
-        <h1 className="text-3xl font-semibold mb-4 items-center justify-center flex">Product List</h1>
-        <div className="relative mb-4">
-          <input
-            type="text"
-            placeholder="Search by product name..."
-            value={searchQuery}
-            onChange={handleSearch}
-            onFocus={handleSearchFocus}
-            onBlur={handleSearchBlur}
-            className="border border-gray-300 rounded-md px-3 py-2 w-full"
-          />
-          {isSearchFocused && suggestions.length > 0 && (
-            <ul className="absolute z-10 top-full left-0 right-0 bg-white border border-gray-300 rounded-md shadow-md mt-0 overflow-y-auto max-h-[20rem]">
-            {suggestions.map((suggestion, index) => (
-                <li
-                  key={index}
-                  className="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                  onMouseDown={() => handleSuggestionClick(suggestion)}
-                >
-                  {suggestion}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+    <div className="bg-white text-black h-screen w-screen flex flex-col">
+      <AdminNavbar
+        searchQuery={searchQuery}
+        handleSearch={handleSearch}
+        handleSearchFocus={handleSearchFocus}
+        handleSearchBlur={handleSearchBlur}
+        suggestions={suggestions}
+        handleSuggestionClick={handleSuggestionClick}
+        isSearchFocused={isSearchFocused}
+      />
+      <div className="container py-2 mt-16">
         <button
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4"
+          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4 flex items-center"
           onClick={handleAddProduct}
         >
+          <PlusCircleIcon className="h-6 w-6 mr-2" />
           Add Product
         </button>
         <table className="table-auto w-full border-collapse border border-gray-400">
@@ -171,31 +162,40 @@ function ProductWork() {
           </thead>
           <tbody>
             {filteredProducts.map((product) => (
-              <tr key={product.product_id} className="text-center">
-                <td className="border px-4 py-2">{product.product_id}</td>
-                <td className="border px-4 py-2">{product.name}</td>
-                <td className="border px-4 py-2">{product.description}</td>
-                <td className="border px-4 py-2">{product.price_per_unit}</td>
-                <td className="border px-4 py-2">{product.unit}</td>
-                <td className="border px-4 py-2">{product.stock_quantity}</td>
-                <td className="border px-4 py-2">
-                  <img src={`http://localhost:3001/${product.image_path}`} alt={product.name} className="h-10 w-10" />
-                </td>
-                <td className="border px-4 py-2">
-                  <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-                    onClick={() => handleEdit(product.product_id)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                    onClick={() => handleDelete(product.product_id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
+              <React.Fragment key={product.product_id}>
+                <tr
+                  className="text-center"
+                  onMouseEnter={() => handleRowHover(product.product_id)}
+                  onMouseLeave={() => handleRowHover(null)}
+                >
+                  <td className="border px-4 py-2">{product.product_id}</td>
+                  <td className="border px-4 py-2">{product.name}</td>
+                  <td className="border px-4 py-2">{product.description}</td>
+                  <td className="border px-4 py-2">{product.price_per_unit}</td>
+                  <td className="border px-4 py-2">{product.unit}</td>
+                  <td className="border px-4 py-2">{product.stock_quantity}</td>
+                  <td className="border px-4 py-2">
+                    <img src={`http://localhost:3001/${product.image_path}`} alt={product.name} className="h-10 w-10" />
+                  </td>
+                  <td className="border px-4 py-2 flex justify-center">
+                    <button
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2 flex items-center"
+                      onClick={() => handleEdit(product.product_id)}
+                    >
+                      <PencilIcon className="h-5 w-5" />
+                    </button>
+                    <button
+                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex items-center"
+                      onClick={() => handleDelete(product.product_id)}
+                    >
+                      <TrashIcon className="h-5 w-5" />
+                    </button>
+                  </td>
+                  </tr>
+                {hoveredProductId === product.product_id && (
+                  <AdminCard product={product} />
+                )}
+              </React.Fragment>
             ))}
           </tbody>
         </table>
