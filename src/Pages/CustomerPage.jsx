@@ -1,13 +1,21 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Modal from 'react-modal';
-
+import Navbar from '../Components/Navbar';
 // Sample product data
 const products = [
   {
     id: 1,
     image: 'https://via.placeholder.com/150',
-    title: 'Wireless Headphones',
+    title: 'Wireless ',
+    description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit Eos animi distinctio consectetur cum recusandae laboriosam ducimus assumenda enim. Maiores, quisquam Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates, eligendi laboriosam magnam aliquam itaque nesciunt accusantium provident voluptas odit laborum nulla debitis iste, sed pariatur id adipisci sapiente rerum, nam ab quis iure delectus placeat. Dignissimos vitae necessitatibus quidem blanditiis doloribus, sapiente consequuntur maiores sequi at exercitationem culpa saepe molestias',
+    price: 49.99,
+    unit: 'kg',
+  },
+  {
+    id: 1,
+    image: 'https://via.placeholder.com/150',
+    title: 'Wireless ',
     description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit Eos animi distinctio consectetur cum recusandae laboriosam ducimus assumenda enim. Maiores, quisquam Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates, eligendi laboriosam magnam aliquam itaque nesciunt accusantium provident voluptas odit laborum nulla debitis iste, sed pariatur id adipisci sapiente rerum, nam ab quis iure delectus placeat. Dignissimos vitae necessitatibus quidem blanditiis doloribus, sapiente consequuntur maiores sequi at exercitationem culpa saepe molestias',
     price: 49.99,
     unit: 'kg',
@@ -35,15 +43,14 @@ const InventoryPage = () => {
   const renderProduct = (product) => (
     <div
       key={product.id}
-      className="product-card p-4 border rounded-lg shadow-md flex flex-col items-center w-64 m-4 cursor-pointer"
+      className="product-card p-4 border rounded-lg shadow-md flex flex-col items-center w-48 m-4 cursor-pointer pt-7 bg-[#F8F5F8]"
       onClick={() => openModal(product)}
     >
-      <img className="w-32 h-32 object-cover mb-4" src={product.image} alt={product.title} />
+      <img className="w-32 h-32 object-cover mb-2" src={product.image} alt={product.title} />
       <div className="product-info w-full">
-        <h3 className="font-bold text-lg mb-2 justify-center flex">{product.title}</h3>
-        <p className="text-gray-700 mb-2">Price: ${product.price}</p>
-        <p className="text-gray-700 mb-2 truncate">Description: {product.description}</p>
-        <p className="text-gray-700 mb-4">Unit: {product.unit}</p>
+        <h3 className="font-bold text-lg  justify-center flex">{product.title}</h3>
+        <p className="text-gray-700 ">Price: ${product.price}/{product.unit}</p>
+        <p className="text-gray-700 truncate">Description: {product.description}</p>
       </div>
       <div className='flex justify-between flex-row'>
         
@@ -52,9 +59,12 @@ const InventoryPage = () => {
   );
 
   return (
-    <div className="inventory-page p-6">
-      <h1 className="text-2xl font-bold mb-6">Inventory</h1>
-      <div className="product-list flex flex-wrap justify-center">
+    
+    <div className="inventory-page pt-[70px] bg-[#f7f7f7] w-screen h-screen  ">
+     <div className='flex fixed' >
+     <Navbar/>
+     </div> 
+      <div className=" product-list flex flex-wrap justify-center">
         {products.map(renderProduct)}
       </div>
       {selectedProduct && (
@@ -75,9 +85,9 @@ const InventoryPage = () => {
               </button>
             </div>
             <img className="w-32 h-32 object-cover mb-4" src={selectedProduct.image} alt={selectedProduct.title} />
-            <p className="text-gray-700 mb-2">Price: ${selectedProduct.price}</p>
-            <p className="text-gray-700 mb-2">Description: {selectedProduct.description}</p>
-            <p className="text-gray-700 mb-4">Unit: {selectedProduct.unit}</p>
+            <p className="text-gray-700 mb-1">Price: ${selectedProduct.price}</p>
+            <p className="text-gray-700 mb-1">Description: {selectedProduct.description}</p>
+            <p className="text-gray-700 mb-2">Unit: {selectedProduct.unit}</p>
             <div className='flex justify-between'>
               <Link to="/cartpage" className="flex">
                 <button className="bg-blue-500 text-white px-4 py-2 rounded-lg flex">Add to Cart</button>
