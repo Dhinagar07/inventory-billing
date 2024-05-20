@@ -12,11 +12,11 @@ const PayOrder = () => {
         currency: 'INR',
         items:
     [{
-    product_id:13,
+    product_id:23,
     quantity:2
     },
     {
-    product_id:13,
+    product_id:22,
     quantity:5
     }]  // Currency code
       });

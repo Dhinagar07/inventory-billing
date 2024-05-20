@@ -7,7 +7,6 @@ import AdminNavbar from '../Components/adminNavbar';
 import { PencilIcon, TrashIcon, PlusCircleIcon } from '@heroicons/react/24/solid';
 import AdminCard from '../Components/AdminCard';
 
-
 function ProductWork() {
   const [products, setProducts] = useState([]);
   const [editingProductId, setEditingProductId] = useState(null);
@@ -17,7 +16,8 @@ function ProductWork() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
-  const [hoveredProductId, setHoveredProductId] = useState(null);
+  const [selectedProductId, setSelectedProductId] = useState(null);
+  const [isCardVisible, setIsCardVisible] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -124,8 +124,13 @@ function ProductWork() {
     setIsSearchFocused(false);
   };
 
-  const handleRowHover = (productId) => {
-    setHoveredProductId(productId);
+  const handleRowClick = (productId) => {
+    setSelectedProductId(productId);
+    setIsCardVisible(true);
+  };
+
+  const handleCloseCard = () => {
+    setIsCardVisible(false);
   };
 
   return (
@@ -149,83 +154,84 @@ function ProductWork() {
         </button>
         <table className="table-auto w-full border-collapse border border-gray-400">
           <thead>
-            <tr className="bg-gradient-to-r from-cyan-500 to-blue-500">
-              <th className="px-4 py-2">ID</th>
-              <th className="px-4 py-2">Name</th>
-              <th className="px-8 py-2">Description</th>
-              <th className="px-4 py-2">Price</th>
-              <th className="px-4 py-2">Unit</th>
-              <th className="px-4 py-2">Qnty</th>
-              <th className="px-4 py-2">Image</th>
-              <th className="px-4 py-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredProducts.map((product) => (
-              <React.Fragment key={product.product_id}>
-                <tr
-                  className="text-center"
-                  onMouseEnter={() => handleRowHover(product.product_id)}
-                  onMouseLeave={() => handleRowHover(null)}
-                >
-                  <td className="border px-4 py-2">{product.product_id}</td>
-                  <td className="border px-4 py-2">{product.name}</td>
-                  <td className="border px-4 py-2">{product.description}</td>
-                  <td className="border px-4 py-2">{product.price_per_unit}</td>
-                  <td className="border px-4 py-2">{product.unit}</td>
-                  <td className="border px-4 py-2">{product.stock_quantity}</td>
-                  <td className="border px-4 py-2">
-                    <img src={`http://localhost:3001/${product.image_path}`} alt={product.name} className="h-10 w-10" />
-                  </td>
-                  <td className="border px-4 py-2 flex justify-center">
-                    <button
-                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2 flex items-center"
-                      onClick={() => handleEdit(product.product_id)}
-                    >
-                      <PencilIcon className="h-5 w-5" />
-                    </button>
-                    <button
-                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex items-center"
-                      onClick={() => handleDelete(product.product_id)}
-                    >
-                      <TrashIcon className="h-5 w-5" />
-                    </button>
-                  </td>
-                  </tr>
-                {hoveredProductId === product.product_id && (
-                  <AdminCard product={product} />
-                )}
-              </React.Fragment>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      {showAddProductForm && (
-        <div className="fixed inset-0 bg-gray-700 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-8 rounded shadow">
-            <AddDia onSubmit={handleSubmitAddProduct} />
-          </div>
-        </div>
-      )}
-      {deletingProductId && (
-        <DeleteDia
-          productName={products.find(product => product.product_id === deletingProductId)?.name}
-          onCancel={handleDeleteCancel}
-          onConfirm={handleDeleteConfirm}
-        />
-      )}
-      {editingProductId && (
-        <div className="fixed inset-0 bg-gray-700 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-8 rounded shadow">
-            <ProductData
-              product={products.find(product => product.product_id === editingProductId)}
-              onSubmit={handleEditSubmit}
-            />
-          </div>
-        </div>
-      )}
+                      <tr className="bg-gradient-to-r from-cyan-500 to-blue-500">
+            <th className="px-4 py-2">ID</th>
+            <th className="px-4 py-2">Name</th>
+
+            <th className="px-4 py-2">Price</th>
+            <th className="px-4 py-2">Unit</th>
+            <th className="px-4 py-2">Qnty</th>
+            
+            <th className="px-4 py-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredProducts.map((product) => (
+            <React.Fragment key={product.product_id}>
+              <tr
+                className="text-center cursor-pointer"
+                onClick={() => handleRowClick(product.product_id)}
+              >
+                <td className="border px-4 py-2">{product.product_id}</td>
+                <td className="border px-4 py-2">{product.name}</td>
+                <td className="border px-4 py-2">{product.price_per_unit}</td>
+                <td className="border px-4 py-2">{product.unit}</td>
+                <td className="border px-4 py-2">{product.stock_quantity}</td>
+                <td className="border px-4 py-2 flex justify-center">
+                  <button
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2 flex items-center"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleEdit(product.product_id);
+                    }}
+                  >
+                    <PencilIcon className="h-5 w-5" />
+                  </button>
+                  <button
+                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex items-center"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(product.product_id);
+                    }}
+                  >
+                    <TrashIcon className="h-5 w-5" />
+                  </button>
+                </td>
+              </tr>
+              {isCardVisible && selectedProductId === product.product_id && (
+                <AdminCard product={product} handleCloseCard={handleCloseCard} />
+              )}
+            </React.Fragment>
+          ))}
+        </tbody>
+      </table>
     </div>
-  );
+    {showAddProductForm && (
+      <div className="fixed inset-0 bg-gray-700 bg-opacity-50 flex justify-center items-center">
+        <div className="bg-white p-8 rounded shadow">
+          <AddDia onSubmit={handleSubmitAddProduct} />
+        </div>
+      </div>
+    )}
+    {deletingProductId && (
+      <DeleteDia
+        productName={products.find(product => product.product_id === deletingProductId)?.name}
+        onCancel={handleDeleteCancel}
+        onConfirm={handleDeleteConfirm}
+      />
+    )}
+    {editingProductId && (
+      <div className="fixed inset-0 bg-gray-700 bg-opacity-50 flex justify-center items-center">
+        <div className="bg-white p-8 rounded shadow">
+          <ProductData
+            product={products.find(product => product.product_id === editingProductId)}
+            onSubmit={handleEditSubmit}
+          />
+        </div>
+      </div>
+    )}
+  </div>
+);
 }
 
 export default ProductWork;

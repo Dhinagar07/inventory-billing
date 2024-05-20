@@ -60,7 +60,7 @@ const AdminNavbar = ({
           )}
         </Link>
         <Link
-          to="/orders"
+          to="/admin-orders"
           className={`font-bold flex items-center relative ${getLinkClassName('/orders')}`}
           onMouseEnter={() => setTooltip('Orders')}
           onMouseLeave={() => setTooltip('')}

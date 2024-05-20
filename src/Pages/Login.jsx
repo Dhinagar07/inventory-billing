@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 
 import ProductWork from './ProductWork';
+import CustomerPage from './CustomerPage';
 import './Login.css';
 
 const Login = ({ role }) => {
@@ -53,7 +54,7 @@ const Login = ({ role }) => {
 
     if (loggedIn) {
         if (role === 'customer') {
-          return <ProductWork products={products} />;
+          return <CustomerPage cid={username} />;
         } else if (role === 'admin') {
             return <ProductWork products={products} />;
         }
