@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { HomeIcon, ShoppingCartIcon, UserIcon } from '@heroicons/react/24/solid';
 import { FaClipboardList } from "react-icons/fa6";
 import { IoSettings } from "react-icons/io5";
@@ -11,17 +11,19 @@ const CustomerNavbar = ({
   handleSearchBlur,
   suggestions,
   handleSuggestionClick,
-  isSearchFocused
+  isSearchFocused,
+  cid
 }) => {
   const [tooltip, setTooltip] = useState('');
   const location = useLocation();
+  const navigate = useNavigate();
 
   const getLinkClassName = (path) => {
     return location.pathname === path ? 'text-yellow-400' : 'text-white';
   };
 
   return (
-    <nav className="bg-[#5F8575] flex justify-between items-center fixed top-0 left-0 right-0 h-16">
+    <nav className="bg-[#0a1d49] flex justify-between items-center fixed top-0 left-0 right-0 h-16">
       <div className='p-2'>
         <Link
           to="/"
@@ -63,9 +65,9 @@ const CustomerNavbar = ({
         )}
       </div>
       <div className="flex space-x-4 ml-0 items-center p-2">
-        <Link
-          to="/cart"
-          className={`font-bold flex items-center relative ${getLinkClassName('/cart')}`}
+        <button
+          onClick={() => navigate('/cartpage', { state: { cid } })}
+          className={`font-bold flex items-center relative ${getLinkClassName('/cartpage')}`}
           onMouseEnter={() => setTooltip('Cart')}
           onMouseLeave={() => setTooltip('')}
         >
@@ -76,10 +78,10 @@ const CustomerNavbar = ({
               Cart
             </span>
           )}
-        </Link>
+        </button>
 
-        <Link
-          to="/orderpage"
+        <button
+          onClick={() => navigate('/orderpage', { state: { cid } })}
           className={`font-bold flex items-center relative ${getLinkClassName('/orderpage')}`}
           onMouseEnter={() => setTooltip('Orders')}
           onMouseLeave={() => setTooltip('')}
@@ -91,37 +93,9 @@ const CustomerNavbar = ({
               Orders
             </span>
           )}
-        </Link>
+        </button>
 
-        <Link
-          to="/account"
-          className={`font-bold flex items-center relative ${getLinkClassName('/account')}`}
-          onMouseEnter={() => setTooltip('Account')}
-          onMouseLeave={() => setTooltip('')}
-        >
-          <UserIcon className="h-5 w-5 mr-1" />
-          Account
-          {tooltip === 'Account' && (
-            <span className="absolute bottom-full mb-1 w-max bg-black text-white text-xs rounded py-1 px-2">
-              Account
-            </span>
-          )}
-        </Link>
-
-        <Link
-          to="/settings"
-          className={`font-bold flex items-center relative ${getLinkClassName('/settings')}`}
-          onMouseEnter={() => setTooltip('Settings')}
-          onMouseLeave={() => setTooltip('')}
-        >
-          <IoSettings className="h-5 w-5 mr-1" />
-          Settings
-          {tooltip === 'Settings' && (
-            <span className="absolute bottom-full mb-1 w-max bg-black text-white text-xs rounded py-1 px-2">
-              Settings
-            </span>
-          )}
-        </Link>
+        
       </div>
     </nav>
   );

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import './RegistrationStyle.css';
+import styles from './RegistrationStyle.module.css';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -39,9 +39,9 @@ const RegisterPage = () => {
     } catch (error) {
       if (error.response) {
         if (error.response.status === 403) {
-          setErrorMessage('cnt register, you already have an accront.');
+          setErrorMessage('Cannot register, you already have an account.');
         } else if (error.response.status === 500) {
-          setErrorMessage('servererror');
+          setErrorMessage('Server error.');
         } else {
           setErrorMessage('Error: ' + error.response.data.message);
         }
@@ -57,65 +57,83 @@ const RegisterPage = () => {
     setSuccessMessage('');
   };
 
-  return (
-    <div className="container">
-      <h2>Customer Registration</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Name:</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button type="submit">Register</button>
-      </form>
-      <p>
-        Already have an account? <Link to="/customer-login">Login</Link>
-      </p>
-      {errorMessage && (
-        <div className="popup">
-        <div className="popup-content">
-          <p>{errorMessage}</p>
-          <button onClick={handlePopupClose}>Close</button>
-          </div>
-        </div>
+  const squares = [];
+  for (let i = 0; i < 5; i++) {
+    squares.push(
+      <div key={i} className={styles.square} style={{ "--i": i }}></div>
+    );
+  }
 
-      )}
-      {successMessage && (
-        <div className="popup">
-          <div className="popup-content">
-            <p>{successMessage}</p>
-            <button onClick={handlePopupClose}><Link to="/customer-login">Login</Link></button>
+  return (
+    <div className='flex justify-center items-center w-screen h-screen bg-[#bfc9dd] overflow-hidden'>
+      <div className='h-3/5 w-3/5 flex justify-center items-center relative'>
+        {squares}
+        <div className={`${styles.container} w-[350px] shadow-lg bg-[#8697C4] h-[375px]`}>
+          <h2 className='pb-5 justify-center flex font-bold text-lg'>Customer Registration</h2>
+          <form className='flex justify-center' onSubmit={handleSubmit}>
+            <div>
+              <input
+                placeholder='Email'
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                className={styles.input}
+              />
+            </div>
+            <div>
+              <input
+                placeholder='Name'
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+                className={styles.input}
+              />
+            </div>
+            <div>
+              <input
+                type="password"
+                placeholder='Password'
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                className={styles.input}
+              />
+            </div>
+            <button className={`${styles.submitButton} font-bold border-none`} type="submit">Register</button>
+          </form>
+          <div className='flex flex-row justify-center items-center'>
+            <p className={`${styles.text1} flex justify-center text-lg`}>
+              Already have an account?
+            </p>
+            <p className={`${styles.text2} flex justify-center`}>
+              <Link className='pl-1 font-bold text-lg' to="/customer-login"> Login</Link>
+            </p>
           </div>
+          {errorMessage && (
+            <div className={styles.popup}>
+              <div className={styles.popupContent}>
+                <p>{errorMessage}</p>
+                <button onClick={handlePopupClose}>Close</button>
+              </div>
+            </div>
+          )}
+          {successMessage && (
+            <div className={styles.popup}>
+              <div className={styles.popupContent}>
+                <p>{successMessage}</p>
+                <button onClick={handlePopupClose}><Link to="/customer-login">Login</Link></button>
+              </div>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
 
 export default RegisterPage;
-

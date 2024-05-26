@@ -4,14 +4,7 @@ import { CubeIcon, ClipboardDocumentListIcon, Cog6ToothIcon } from '@heroicons/r
 import { motion } from "framer-motion"
 
 const AdminNavbar = ({
-  searchQuery,
-  handleSearch,
-  handleSearchFocus,
-  handleSearchBlur,
-  suggestions,
-  handleSuggestionClick,
-  isSearchFocused
-}) => {
+  }) => {
   const [tooltip, setTooltip] = useState('');
   const location = useLocation();
   
@@ -68,17 +61,9 @@ const AdminNavbar = ({
             Orders
           </Link>
         </motion.div>
-        {/* <motion.div whileHover={{ scale: 1.2 }} whileTap={{ scale: 1.1 }}>
-          <Link
-            to="/settings"
-            className={`font-bold flex items-center relative ${getLinkClassName('/settings')}`}
-            onMouseEnter={() => setTooltip('Settings')}
-            onMouseLeave={() => setTooltip('')}
-          >
-            <Cog6ToothIcon className="h-5 w-5 mr-1" />
-            Settings
-          </Link>
-        </motion.div> */}
+        <motion.div whileHover={{ scale: 1.2 }} whileTap={{ scale: 1.1 }}>
+          
+        </motion.div>
       </div>
     </nav>
   );

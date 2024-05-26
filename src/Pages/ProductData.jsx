@@ -29,76 +29,78 @@ function ProductData({ product, onSubmit }) {
   };
 
   return (
-    <div>
-      <h2 className='p-2 justify-center items-center flex'>Edit Product</h2>
-      <form className='text-black flex flex-col w-[300px] justify-start' onSubmit={handleSubmit} encType="multipart/form-data">
-        <div className='p-3'>
-          <label htmlFor="name">Name:</label>
+    <div className=' items-center justify-center flex flex-col' >
+      <h2 className='p-2 justify-center items-center flex font-bold text-lg'>Edit Product</h2>
+      <form className='text-black flex flex-col w-[300px]  ' onSubmit={handleSubmit} encType="multipart/form-data">
+        <div className='p-2'>
+          
           <input
             type="text"
-            className='bg-white p-1'
+            placeholder='Name'
+            className='bg-white p-1 border border-black w-[100%]'
             id="name"
             name="name"
             value={formData.name}
             onChange={handleChange}
           />
         </div>
-        <div className='p-3'>
-          <label className='justify-evenly items-center flex' htmlFor="description">Description:</label>
+        <div className='p-2'>
+          
           <textarea
             rows={2}
             type="text"
-            className='bg-white p-1 w-full'
+            placeholder='Description'
+            className='bg-white p-1 w-full border border-black '
             id="description"
             name="description"
             value={formData.description}
             onChange={handleChange}
           />
         </div>
-        <div className='p-3'>
-          <label htmlFor="price">Price:</label>
+        <div className='p-2'>
           <input
             type="number"
-            className='bg-white p-1'
+            placeholder='Price'
+            className='bg-white p-1 border border-black w-[100%]'
             id="price"
             name="price_per_unit"
             value={formData.price_per_unit}
             onChange={handleChange}
           />
         </div>
-        <div className='p-3'>
-          <label htmlFor="unit">Unit:</label>
+        <div className='p-2'>
           <input
             type="text"
-            className='bg-white p-1'
+            placeholder='Unit'
+            className='bg-white p-1 border border-black w-[100%]'
             id="unit"
             name="unit"
             value={formData.unit}
             onChange={handleChange}
           />
         </div>
-        <div className='p-3'>
-          <label htmlFor="stock_quantity">Stock Quantity:</label>
+        <div className='p-2'>
           <input
             type="number"
-            className='bg-white p-1'
+            placeholder='Stock Quantity'
+            className='bg-white p-1 border border-black w-[100%]'
             id="stock_quantity"
             name="stock_quantity"
             value={formData.stock_quantity}
             onChange={handleChange}
           />
         </div>
-        <div className='p-3'>
-          <label htmlFor="image">Image:</label>
+        <div className='p-2'>
           <input
             type="file"
-            className='bg-white p-1'
+            placeholder='Image'
+            className='bg-white p-1 border border-black w-[100%]'
             id="image"
             name="image"
             onChange={handleChange}
           />
         </div>
-        <button className='p-3 flex bg-blue-400 justify-center items-center' type="submit">Submit</button>
+        <button className=' font-bold flex bg-blue-400 justify-center items-center' type="submit">Submit</button>
       </form>
     </div>
   );

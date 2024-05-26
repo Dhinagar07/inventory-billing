@@ -46,73 +46,73 @@ function AddDia({ onSubmit }) {
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-10 p-6 bg-white rounded-lg shadow">
-      <h2 className="text-2xl font-bold mb-4">Add Product</h2>
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
+    <div className='' >
+      <div className="max-w-lg mx-auto bg-white rounded-lg flex justify-center items-center flex-col">
+      <h2 className="text-2xl font-bold mb-4 text-black">Add Product</h2>
+      <form  onSubmit={handleSubmit} encType="multipart/form-data">
         <div className="mb-2">
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name:</label>
           <input
-            type="text"
+            type="Text"
+            placeholder='Name'
             id="name"
             name="name"
             value={formData.name}
             onChange={handleChange}
-            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="mt-1 block w-full border rounded-md shadow-sm border-black sm:text-sm"
           />
         </div>
         <div className="mb-2">
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description:</label>
           <input
             type="text"
+            placeholder='Description'
             id="description"
             name="description"
             value={formData.description}
             onChange={handleChange}
-            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="mt-1 block w-full border-black rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border "
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="price" className="block text-sm font-medium text-gray-700">Price:</label>
           <input
             type="number"
+            placeholder='Price'
             id="price"
             name="price"
             value={formData.price}
             onChange={handleChange}
-            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-[40px]"
+            className="mt-1 block w-full border-black rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-[40px] border "
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="unit" className="block text-sm font-medium text-gray-700">Unit:</label>
           <input
             type="text"
+            placeholder='Unit'
             id="unit"
             name="unit"
             value={formData.unit}
             onChange={handleChange}
-            className="mt-1 block w-full text-sm border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-[40px]"
+            className="flex justify-center mt-1  w-full text-sm border-black rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-[40px] border "
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="image" className="block text-sm font-medium text-gray-700">Image:</label>
           <input
             type="file"
             id="image"
             name="image"
             accept="image/*"
             onChange={handleChange}
-            className="mt-1 block w-full text-sm border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm "
+            className="mt-1 block w-full text-sm border-black rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm  border "
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="stock_quantity" className="block text-sm font-medium text-gray-700">Stock Quantity:</label>
           <input
             type="number"
+            placeholder='Stock Quantity'
             id="stock_quantity"
             name="stock_quantity"
             value={formData.stock_quantity}
             onChange={handleChange}
-            className="mt-1 block w-full text-sm border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-[40px]"
+            className="mt-1 block w-full text-sm border-black rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-[40px] border "
           />
         </div>
         <button type="submit" className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
@@ -120,6 +120,8 @@ function AddDia({ onSubmit }) {
         </button>
       </form>
     </div>
+    </div>
+    
   );
 }
 

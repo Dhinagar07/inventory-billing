@@ -6,6 +6,7 @@ import AddDia from './AddDia';
 import AdminNavbar from '../Components/adminNavbar';
 import { PencilIcon, TrashIcon, PlusCircleIcon } from '@heroicons/react/24/solid';
 import AdminCard from '../Components/AdminCard';
+import { motion } from 'framer-motion';
 
 function ProductWork() {
   const [products, setProducts] = useState([]);
@@ -134,7 +135,7 @@ function ProductWork() {
   };
 
   return (
-    <div className="bg-white text-black h-screen w-screen flex flex-col">
+    <div className=" text-black h-screen w-screen flex flex-col overflow-x-hidden">
       <AdminNavbar
         searchQuery={searchQuery}
         handleSearch={handleSearch}
@@ -144,94 +145,104 @@ function ProductWork() {
         handleSuggestionClick={handleSuggestionClick}
         isSearchFocused={isSearchFocused}
       />
-      <div className="container py-2 mt-16">
-        <button
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4 flex items-center"
+      <div className="container mt-20 flex flex-col ml-6 ">
+       <motion.span
+       >
+       <button
+          className="bg-blue-900 hover:bg-blue-700 hover:scale-110 transition-all text-white font-bold py-2 px-4 rounded mb-4 flex items-center"
           onClick={handleAddProduct}
         >
           <PlusCircleIcon className="h-6 w-6 mr-2" />
           Add Product
         </button>
-        <table className="table-auto w-full border-collapse border border-gray-400">
-          <thead>
-                      <tr className="bg-gradient-to-r from-cyan-500 to-blue-500">
-            <th className="px-4 py-2">ID</th>
-            <th className="px-4 py-2">Name</th>
-
-            <th className="px-4 py-2">Price</th>
-            <th className="px-4 py-2">Unit</th>
-            <th className="px-4 py-2">Qnty</th>
-            
-            <th className="px-4 py-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredProducts.map((product) => (
-            <React.Fragment key={product.product_id}>
-              <tr
-                className="text-center cursor-pointer"
-                onClick={() => handleRowClick(product.product_id)}
-              >
-                <td className="border px-4 py-2">{product.product_id}</td>
-                <td className="border px-4 py-2">{product.name}</td>
-                <td className="border px-4 py-2">{product.price_per_unit}</td>
-                <td className="border px-4 py-2">{product.unit}</td>
-                <td className="border px-4 py-2">{product.stock_quantity}</td>
-                <td className="border px-4 py-2 flex justify-center">
-                  <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2 flex items-center"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleEdit(product.product_id);
-                    }}
-                  >
-                    <PencilIcon className="h-5 w-5" />
-                  </button>
-                  <button
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex items-center"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDelete(product.product_id);
-                    }}
-                  >
-                    <TrashIcon className="h-5 w-5" />
-                  </button>
-                </td>
-              </tr>
-              {isCardVisible && selectedProductId === product.product_id && (
-                <AdminCard product={product} handleCloseCard={handleCloseCard} />
-              )}
-            </React.Fragment>
-          ))}
-        </tbody>
-      </table>
+       </motion.span>
+       <div className=' rounded-lg' >
+       <table className="table-auto w-full border-collapse  border-gray-400 shadow-lg ">
+          <thead className=' rounded-lg' >
+            <tr className="bg-[#245bae] text-white">
+              <th className="px-4 py-2">ID</th>
+              <th className="px-4 py-2">Name</th>
+              <th className="px-4 py-2">Price</th>
+              <th className="px-4 py-2">Unit</th>
+              <th className="px-4 py-2">Qnty</th>
+              <th className="px-4 py-2">Actions</th>
+            </tr>
+          </thead>
+          <tbody className=' rounded-lg ' >
+            {filteredProducts.map((product) => (
+              <React.Fragment key={product.product_id}>
+                <tr
+                  className="text-center cursor-pointer hover:bg-slate-100 border border-collapse"
+                  onClick={() => handleRowClick(product.product_id)}
+                >
+                  <td className="border px-4 py-2 ">{product.product_id}</td>
+                  <td className="border px-4 py-2 ">{product.name}</td>
+                  <td className="border px-4 py-2 ">{product.price_per_unit}</td>
+                  <td className="border px-4 py-2 ">{product.unit}</td>
+                  <td className="border px-4 py-2 ">{product.stock_quantity}</td>
+                  <td className=" px-4 py-2 flex justify-center">
+                   <motion.span>
+                   <button
+                      className="bg-blue-500 hover:bg-blue-700 hover:scale-110 transition-all text-white py-1.5 px-4 rounded mr-2 flex items-center"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEdit(product.product_id);
+                      }}
+                    >
+                      <PencilIcon className="h-5 w-5" />
+                    </button>
+                   </motion.span>
+                    <span>
+                    <button
+                      className="bg-red-500 hover:bg-red-700 hover:scale-110 transition-all text-white py-1.5 px-4 rounded flex items-center"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(product.product_id);
+                      }}
+                    >
+                      <TrashIcon className="h- w-5" />
+                    </button>
+                    </span>
+                  </td>
+                </tr>
+                {isCardVisible && selectedProductId === product.product_id && (
+                  <AdminCard product={product} handleCloseCard={handleCloseCard} />
+                )}
+              </React.Fragment>
+            ))}
+          </tbody>
+        </table>
+       </div>
+      </div>
+      {showAddProductForm && (
+        <div className="fixed inset-0 bg-gray-700 bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-8 rounded shadow">
+            <AddDia onSubmit={handleSubmitAddProduct} />
+          </div>
+        </div>
+      )}
+      {deletingProductId && (
+        <DeleteDia
+          productName={products.find(product => product.product_id === deletingProductId)?.name}
+          onCancel={handleDeleteCancel}
+          onConfirm={handleDeleteConfirm}
+        />
+      )}
+      {editingProductId && (
+        <div className="fixed inset-0 bg-gray-700 bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-8 rounded shadow">
+            <ProductData
+              product={products.find(product => product.product_id === editingProductId)}
+              onSubmit={handleEditSubmit}
+            />
+          </div>
+        </div>
+      )}
     </div>
-    {showAddProductForm && (
-      <div className="fixed inset-0 bg-gray-700 bg-opacity-50 flex justify-center items-center">
-        <div className="bg-white p-8 rounded shadow">
-          <AddDia onSubmit={handleSubmitAddProduct} />
-        </div>
-      </div>
-    )}
-    {deletingProductId && (
-      <DeleteDia
-        productName={products.find(product => product.product_id === deletingProductId)?.name}
-        onCancel={handleDeleteCancel}
-        onConfirm={handleDeleteConfirm}
-      />
-    )}
-    {editingProductId && (
-      <div className="fixed inset-0 bg-gray-700 bg-opacity-50 flex justify-center items-center">
-        <div className="bg-white p-8 rounded shadow">
-          <ProductData
-            product={products.find(product => product.product_id === editingProductId)}
-            onSubmit={handleEditSubmit}
-          />
-        </div>
-      </div>
-    )}
-  </div>
-);
+  );
 }
 
 export default ProductWork;
+
+
+  
